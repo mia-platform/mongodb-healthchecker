@@ -4,7 +4,12 @@
   "description": "A utility library to perform mongodb healthchecks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "coverage": "npm run unit -- --coverage",
+    "lint": "eslint . --ignore-path=.gitignore",
+    "test": "npm run lint && npm run unit && npm run checkonly",
+    "unit": "jest",
+    "update-version": "./scripts/update-version.sh ${npm_package_version} && git add CHANGELOG.md Dockerfile",
+    "version": "npm run update-version"
   },
   "repository": {
     "type": "git",
@@ -17,8 +22,8 @@
   "devDependencies": {
     "@mia-platform/eslint-config-mia": "^3.0.0",
     "eslint": "^7.28.0",
-    "snazzy": "^9.0.0",
-    "tap": "^15.0.9"
+    "jest": "^27.0.4",
+    "snazzy": "^9.0.0"
   },
   "author": "core@mia-platform.eu",
   "license": "SEE LICENSE IN LICENSE"
