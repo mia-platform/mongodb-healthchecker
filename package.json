@@ -7,7 +7,7 @@
     "coverage": "npm run unit -- --coverage",
     "lint": "eslint . --ignore-path=.gitignore",
     "test": "npm run lint && npm run unit",
-    "unit": "jest",
+    "unit": "MONGO_HOST=${MONGO_HOST_CI:-127.0.0.1} jest",
     "update-version": "./scripts/update-version.sh ${npm_package_version} && git add CHANGELOG.md Dockerfile",
     "version": "npm run update-version"
   },
@@ -22,7 +22,9 @@
   "devDependencies": {
     "@mia-platform/eslint-config-mia": "^3.0.0",
     "eslint": "^7.28.0",
+    "eslint-plugin-jest": "^24.3.6",
     "jest": "^27.0.4",
+    "mongodb": "^3.6.9",
     "snazzy": "^9.0.0"
   },
   "author": "core@mia-platform.eu",
