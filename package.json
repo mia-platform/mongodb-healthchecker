@@ -8,7 +8,7 @@
     "lint": "eslint . --ignore-path=.gitignore",
     "test": "npm run lint && npm run unit",
     "unit": "MONGO_HOST=${MONGO_HOST_CI:-127.0.0.1} jest",
-    "update-version": "./scripts/update-version.sh ${npm_package_version} && git add CHANGELOG.md Dockerfile",
+    "update-version": "./scripts/update-version.sh ${npm_package_version} && git add CHANGELOG.md",
     "version": "npm run update-version"
   },
   "repository": {
