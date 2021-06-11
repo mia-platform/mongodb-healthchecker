@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-# Copyright 2019 Mia srl
-# All rights reserved.
-
 set -o errexit
 set -o nounset
 
@@ -22,5 +19,4 @@ else
 fi
 
 sed -i.bck "s|## Unreleased|## v${TAG_VALUE} - ${NOW_DATE}|g" "${SOURCE_DIR}/CHANGELOG.md"
-sed -i.bck "s|version=\"[0-9]*.[0-9]*.[0-9]*.*\"|version=\"${TAG_VALUE}\"|" "${SOURCE_DIR}/Dockerfile"
-rm -fr "${SOURCE_DIR}/CHANGELOG.md.bck" "${SOURCE_DIR}/Dockerfile.bck"
+rm -fr "${SOURCE_DIR}/CHANGELOG.md.bck"
