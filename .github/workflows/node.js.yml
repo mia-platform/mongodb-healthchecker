@@ -40,11 +40,6 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        
-    - uses: JS-DevTools/npm-publish@v1.4.3
-      if: ${{ startsWith(github.ref, 'refs/tags/') }}
-      with:
-        token: ${{ secrets.NPM_TOKEN }}
 
   publish:
     runs-on: ubuntu-latest
