@@ -42,21 +42,22 @@ module.exports = function mongodbHealthChecker(client) {
       [prop]: val,
     }
   }
-  const isReady = () => Object.values(addressConnectionMap).some(({ ready, created }) => ready && created)
-
-  client.on('connectionCreated', ({ address }) => setAddressMap(address, 'created', true))
-
-  client.on('connectionReady', ({ address }) => setAddressMap(address, 'ready', true))
-
-  client.on('connectionClosed', ({ address }) => {
+  const connectionCreated = (address) => setAddressMap(address, 'created', true)
+  const connectionReady = (address) => setAddressMap(address, 'ready', true)
+  const connectionLost = (address) => {
     setAddressMap(address, 'created', false)
     setAddressMap(address, 'ready', false)
-  })
+  }
 
-  client.on('serverHeartbeatFailed', ({ connectionId }) => {
-    setAddressMap(connectionId, 'created', false)
-    setAddressMap(connectionId, 'ready', false)
-  })
+  const isReady = () => Object.values(addressConnectionMap).some(({ ready, created }) => ready && created)
+
+  client.on('connectionCreated', ({ address }) => connectionCreated(address))
+
+  client.on('connectionReady', ({ address }) => connectionReady(address))
+
+  client.on('connectionClosed', ({ address }) => connectionLost(address))
+
+  client.on('serverHeartbeatFailed', ({ connectionId }) => connectionLost(connectionId))
 
   return {
     isUp: async() => pingDB(client),
