@@ -1,6 +1,6 @@
 {
   "name": "@mia-platform-internal/mongodb-healthchecker",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A utility library to perform mongodb healthchecks",
   "main": "index.js",
   "scripts": {
