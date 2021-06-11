@@ -1,5 +1,5 @@
 {
-  "name": "@mia-platform-internal/mongodb-healthchecker",
+  "name": "@mia-platform/mongodb-healthchecker",
   "version": "1.0.0",
   "description": "A utility library to perform mongodb healthchecks",
   "main": "index.js",
