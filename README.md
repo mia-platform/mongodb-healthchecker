@@ -16,13 +16,18 @@ With the advent of the Node MongoDB Official Driver v4 and the forced use of the
 By simply importing the library and provide it with a configured MongoDB Client you'll be provided with two functions `isUp` and `isReady` to check whether the connection is available and operate accordingly.
 
 ```javascript
-const {MongoClient} = require('mongodb')
+const { MongoClient } = require('mongodb')
 const mongoDBHealthChecker = require('@mia-platform/mongodb-healthchecker')
 
 const client = new MongoClient(...)
-await client.connect()
 
+// Note: the health checker must be connected before the MongoDB client connects,
+//       since the checker relies on MongoDB events. On the contrary, it might happen
+//       that connection events are fired before the listener is registered and
+//       thus resulting in an always falsy readiness check
 const { isReady, isUp } = mongoDBHealthChecker(client)
+
+await client.connect()
 
 const isConnectionReady = await isReady()
 const isConnectionUp = await isUp()
@@ -32,11 +37,11 @@ const isConnectionUp = await isUp()
 
 ## Fastify
 
-When you whish to integrate the mongodb-healthchecker library with the [fastify](https://github.com/fastify/fastify) framework you can use `fastify-mongodb` and `fastify-plugin` to help you out in setting up the healthchecker.
+When you whish to integrate the mongodb-healthchecker library with the [fastify](https://github.com/fastify/fastify) framework you can use [`@fastify/mongodb`](https://github.com/fastify/fastify-mongodb) and [`fastify-plugin`](https://github.com/fastify/fastify-plugin) to help you out in setting up the healthchecker.
 
 [Keep in mind there's an open issue on fastify integration](https://github.com/mia-platform/mongodb-healthchecker/issues/1) that may impact services using `isReady` due to fastify delay in plugin registration.
 
-The suggested way to integrate the library right now is to just use the `isUp` function, see below:
+The suggested way to integrate the library with `fastify right now is to just use the `isUp` function, see below:
 
 ```javascript
 const fastifyMongodb = require('fastify-mongodb')
