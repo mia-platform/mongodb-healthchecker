@@ -41,7 +41,7 @@ When you whish to integrate the mongodb-healthchecker library with the [fastify]
 
 [Keep in mind there's an open issue on fastify integration](https://github.com/mia-platform/mongodb-healthchecker/issues/1) that may impact services using `isReady` due to fastify delay in plugin registration.
 
-The suggested way to integrate the library with `fastify right now is to just use the `isUp` function, see below:
+The suggested way to integrate the library with fastify right now is to just use the `isUp` function, see below:
 
 ```javascript
 const fastifyMongodb = require('fastify-mongodb')
