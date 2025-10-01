@@ -6,7 +6,7 @@ name: Node.js CI
 on:
   push:
     branches: [ main ]
-    tags: '*'
+    tags: [ '*' ]
   pull_request:
     branches: [ main ]
 
@@ -16,49 +16,50 @@ jobs:
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        node-version: [12.x, 14.x, 15.x]
-        mongodb-version: ['4.0', '4.2', '4.4']
+        node-version: [20.x, 22.x, 24.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        show-progress: false
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
       with:
         node-version: ${{ matrix.node-version }}
+        check-latest: true
 
     - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.6.0
+      uses: supercharge/mongodb-github-action@90004df786821b6308fb02299e5835d0dae05d0d # v1.12.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
-        
+
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
     - run: npm run coverage
 
     - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2.3.6
 
   publish:
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          show-progress: false
 
       - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.6.0
+        uses: supercharge/mongodb-github-action@90004df786821b6308fb02299e5835d0dae05d0d # v1.12.0
         with:
-          mongodb-version: 4.4
+          mongodb-version: 8
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: 14.x
-      - run: npm install
+          node-version: 24
+          check-latest: true
+      - run: npm ci
       - run: npm test
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          access: 'public'
+      - run: npm publish --access public
